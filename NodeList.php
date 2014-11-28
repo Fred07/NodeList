@@ -1,10 +1,11 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: Hiiir
+ * User: Howard (Five)
  * Date: 2014/11/26
  * Time: 上午 10:23
  */
+
 class_exists("Node") || require_once(dirname(__FILE__)."/Node.php");
 class NodeList {
 
@@ -41,11 +42,11 @@ class NodeList {
     }
 
     // Add node to last
-    public function addNode($node) {
+    public function addNodeToLast($node) {
 
         if ( $node instanceof Node ) {
 
-            $this->addNodeToPosition($node, $this->count);
+            $this->addNode($node, $this->count);
 
         } else {
             throw new Exception(self::ERROR_TYPE_NODE);
@@ -57,7 +58,7 @@ class NodeList {
 
         if ( $node instanceof Node ) {
 
-            $this->addNodeToPosition($node, 0);
+            $this->addNode($node, 0);
 
         } else {
             throw new Exception(self::ERROR_TYPE_NODE);
@@ -123,7 +124,7 @@ class NodeList {
 
     // 指定位置插入node
     // @param $number int: 插入位置, 0為起始位置
-    protected function addNodeToPosition( $node, $pos ) {
+    protected function addNode( $node, $pos ) {
 
         // 檢查範圍
         if ( !$this->isValidInsertPos($pos) ) {
