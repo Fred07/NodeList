@@ -1,2 +1,2 @@
 ## NodeList
-Linked list 實做練習
+Linked list 實作練習
