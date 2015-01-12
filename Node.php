@@ -8,16 +8,12 @@
 
 class Node {
 
-    protected $id;
     protected $value;
     protected $prev;
     protected $next;
 
     function Node($param = array()) {
 
-        if (isset($param['id'])) {
-            $this->id = $param['id'];
-        }
         if (isset($param['value'])) {
             $this->value = $param['value'];
         }
@@ -27,9 +23,6 @@ class Node {
     }
 
     // Setter
-    public function setId($id) {
-        $this->id = $id;
-    }
 
     public function setValue($value) {
         $this->value = $value;
@@ -45,9 +38,6 @@ class Node {
 
 
     // Getter
-    public function getId() {
-        return $this->id;
-    }
 
     public function getValue() {
         return $this->value;

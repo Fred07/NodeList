@@ -7,11 +7,14 @@
  */
 
 class_exists("Node") || require_once(dirname(__FILE__)."/Node.php");
-class NodeList {
+class NodeList implements Countable, Iterator{
 
     protected $first;
     protected $last;
     protected $count;
+
+    // implement of Iterator
+    protected $pos = 0;
 
     const ERROR_TYPE_NODE = 'need instance of Node';
 
@@ -21,9 +24,10 @@ class NodeList {
         $this->count = 0;
     }
 
-    public function getSize() {
-        return $this->count;
-    }
+    // not being tested
+    /*public function isEmpty() {
+        return ($this->count == 0);
+    }*/
 
     public function getFirst() {
         if ($this->first != null) {
@@ -75,7 +79,7 @@ class NodeList {
 
     // 取得指定位置節點
     // @param $pos int: 索引值, 0為起始位置
-    public function findNodeByPos($pos) {
+    public function getNodeByPos($pos) {
 
         if ( !$this->isNodeExist($pos) ) {
             throw new Exception('can not find node');
@@ -90,36 +94,8 @@ class NodeList {
 
             $targetNode = $targetNode->getNext();
         }
-    }
 
-    // 展列目前List中所有Node
-    public function listAllNode() {
-
-        $curNode = $this->first;
-
-        while( true AND $this->count > 0 ) {
-
-            $this->printOut('id', $curNode->getId());
-            $this->printOut('value', $curNode->getValue());
-
-
-            if ($curNode->hasPrev()) {
-                $this->printOut('next id', $curNode->getPrev()->getId());
-            }
-
-            if ($curNode->hasNext()) {
-                $this->printOut('next id', $curNode->getNext()->getId());
-            } else {
-                break;
-            }
-
-            echo '//==============//<br/><br/>';
-
-            // 選擇下一個node
-            $curNode = $curNode->getNext();
-        }
-
-        //$this->testLog('Node List count', $this->count);
+        //return false;     // 找不到?
     }
 
     // 指定位置插入node
@@ -141,7 +117,7 @@ class NodeList {
                 if ( $i == $pos ) {          // 找到目標位置
 
                     // 進行連結修改
-                    $this->insertNode($prevNode, $node, $curNode);
+                    $this->insertNode($node, $prevNode, $curNode);
                     return true;
                 }
 
@@ -159,7 +135,7 @@ class NodeList {
     // @param $prevNode Node: 上一個節點
     // @param $newNode  Node: 要加入的新節點
     // @param $nextNode Node: 下一個節點
-    protected function insertNode($prevNode, $newNode, $nextNode) {
+    protected function insertNode($newNode, $prevNode, $nextNode) {
         $newNode->setNext($nextNode);
         $newNode->setPrev($prevNode);
         if ($prevNode == null) {
@@ -225,7 +201,7 @@ class NodeList {
     }
 
     // 是否為有資料的節點(非null Node)
-    private function isNodeExist($pos) {
+    protected function isNodeExist($pos) {
 
         if ( $pos >= 0 AND $pos < $this->count ) {
             return true;
@@ -233,6 +209,38 @@ class NodeList {
             return false;
         }
     }
+
+    // implement of Countable
+    public function count() {
+        return $this->count;
+    }
+
+    // implement of Iterator
+    public function valid() {
+        return $this->isNodeExist($this->pos);
+    }
+
+    public function next() {
+        ++$this->pos;
+    }
+
+    public function rewind() {
+        $this->pos = 0;
+    }
+
+    public function current() {
+
+        $node = $this->getNodeByPos($this->pos);
+        return $node->getValue();
+
+        //return $this->getNodeByPos($this->pos);
+    }
+
+    public function key() {
+        return $this->pos;
+    }
+    // End of Iterator implement
+
 
     private function printOut($name, $value) {
 
