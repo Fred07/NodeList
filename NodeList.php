@@ -4,6 +4,7 @@
  * User: Howard (Five)
  * Date: 2014/11/26
  * Time: 上午 10:23
+ * Desc: Doubly Linked List 雙向鍊結串列
  */
 
 class_exists("Node") || require_once(dirname(__FILE__)."/Node.php");
@@ -24,10 +25,9 @@ class NodeList implements Countable, Iterator{
         $this->count = 0;
     }
 
-    // not being tested
-    /*public function isEmpty() {
+    public function isEmpty() {
         return ($this->count == 0);
-    }*/
+    }
 
     public function getFirst() {
         if ($this->first != null) {
@@ -82,7 +82,8 @@ class NodeList implements Countable, Iterator{
     public function getNodeByPos($pos) {
 
         if ( !$this->isNodeExist($pos) ) {
-            throw new Exception('can not find node');
+            //throw new Exception('can not find node');
+            return false;
         }
 
         $targetNode = $this->getFirst();
@@ -95,12 +96,12 @@ class NodeList implements Countable, Iterator{
             $targetNode = $targetNode->getNext();
         }
 
-        //return false;     // 找不到?
+        return false;     // 找不到節點
     }
 
     // 指定位置插入node
     // @param $number int: 插入位置, 0為起始位置
-    protected function addNode( $node, $pos ) {
+    public function addNode( $node, $pos ) {
 
         // 檢查範圍
         if ( !$this->isValidInsertPos($pos) ) {
@@ -130,10 +131,29 @@ class NodeList implements Countable, Iterator{
         }
     }
 
+    // 移除節點
+    // @param $pos int: 刪除指定位置節點, 0為起始位置
+    public function removeNode($pos) {
+
+        $curNode = $this->first;
+        $preNode = null;
+        for ($i=0;$i<=$pos;$i++) {
+
+            if ( $i == $pos ) {
+
+                $this->deleteNode($curNode, $preNode, $curNode->getNext());
+            }
+
+            // 轉移往下一個節點
+            $preNode = $curNode;
+            $curNode = $curNode->getNext();
+        }
+    }
+
     // 加入節點
     // 指標重新指向
-    // @param $prevNode Node: 上一個節點
     // @param $newNode  Node: 要加入的新節點
+    // @param $prevNode Node: 上一個節點
     // @param $nextNode Node: 下一個節點
     protected function insertNode($newNode, $prevNode, $nextNode) {
         $newNode->setNext($nextNode);
@@ -152,30 +172,11 @@ class NodeList implements Countable, Iterator{
     }
 
     // 移除節點
-    // @param $pos int: 刪除指定位置節點, 0為起始位置
-    protected function removeNode($pos) {
-
-        $curNode = $this->first;
-        $preNode = null;
-        for ($i=0;$i<=$pos;$i++) {
-
-            if ( $i == $pos ) {
-
-                $this->deleteNode($preNode, $curNode, $curNode->getNext());
-            }
-
-            // 轉移往下一個節點
-            $preNode = $curNode;
-            $curNode = $curNode->getNext();
-        }
-    }
-
-    // 移除節點
     // 指標重新指向
+    // @param $node     Node: 要移除的節點
     // @param $prevNode Node: 上一個節點
-    // @param $node     Node: 要移除的新節點
     // @param $nextNode Node: 下一個節點
-    protected function deleteNode($prevNode, $node, $nextNode) {
+    protected function deleteNode($node, $prevNode, $nextNode) {
 
         if ($prevNode == null) {
             $this->first = $nextNode;
@@ -191,8 +192,8 @@ class NodeList implements Countable, Iterator{
         $this->count--;
     }
 
-    // 可以加入節點的位置
-    private function isValidInsertPos($pos) {
+    // 是否為可以加入節點的位置
+    protected function isValidInsertPos($pos) {
         if ($pos > $this->count) {
             return false;
         } else {

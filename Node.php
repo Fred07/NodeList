@@ -23,7 +23,6 @@ class Node {
     }
 
     // Setter
-
     public function setValue($value) {
         $this->value = $value;
     }
@@ -38,7 +37,6 @@ class Node {
 
 
     // Getter
-
     public function getValue() {
         return $this->value;
     }

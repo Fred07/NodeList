@@ -14,8 +14,8 @@ class Stack  extends NodeList implements Countable, Iterator{
         parent::__construct();
     }
 
-    public function push( $val ) {
-        $node = new Node(array('value'=>$val));
+    public function push( $value ) {
+        $node = new Node(array('value'=>$value));
         $this->addNodeToLast($node);
     }
 
