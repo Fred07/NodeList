@@ -12,7 +12,7 @@ class Node {
     protected $prev;
     protected $next;
 
-    function Node($param = array()) {
+    function __construct($param = array()) {
 
         if (isset($param['value'])) {
             $this->value = $param['value'];
