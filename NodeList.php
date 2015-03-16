@@ -232,8 +232,8 @@ class NodeList implements Countable, Iterator{
     public function current() {
 
         $node = $this->getNodeByPos($this->pos);
-        //return $node->getValue();
-        return $node;
+        return $node->getValue();
+        //return $node;
     }
 
     public function key() {

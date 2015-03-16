@@ -6,9 +6,9 @@
  * Time: 下午 04:30
  */
 
-class_exists("NodeList") || require_once("../library/Hiiir/Public/NodeList.php");
+class_exists("NodeList") || require_once(dirname(__FILE__)."/NodeList.php");
 
-class Stack  extends NodeList implements Countable, Iterator{
+class Stack extends NodeList implements Countable, Iterator{
 
     public function __construct() {
         parent::__construct();

@@ -6,7 +6,7 @@
  * Time: 上午 11:23
  */
 
-class_exists("NodeList") || require_once("../library/Hiiir/Public/NodeList.php");
+class_exists("NodeList") || require_once(dirname(__FILE__)."/NodeList.php");
 
 class Queue extends NodeList implements Countable, Iterator{
 
